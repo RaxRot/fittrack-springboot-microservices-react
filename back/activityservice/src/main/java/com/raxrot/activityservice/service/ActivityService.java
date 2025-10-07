@@ -8,6 +8,9 @@ import com.raxrot.activityservice.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ActivityService {
@@ -53,5 +56,13 @@ public class ActivityService {
             case HIKING -> 6.5;
             case STRETCHING -> 2.5;
         };
+    }
+
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity>activityList = activityRepository.findByUserId(userId);
+        List<ActivityResponse> activityResponseList = activityList.stream()
+                .map(activity -> mapToResponse(activity))
+                .collect(Collectors.toList());
+        return activityResponseList;
     }
 }
