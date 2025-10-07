@@ -15,19 +15,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActivityService {
     private final ActivityRepository activityRepository;
+    private final UserValidationService userValidationService;
 
     public ActivityResponse trackActivity(ActivityRequest activityRequest) {
-        Activity activity = Activity.builder()
-                .userId(activityRequest.getUserId())
-                .type(activityRequest.getActivityType())
-                .duration(activityRequest.getDuration())
-                .build();
+        boolean isUserValid=userValidationService.validateUser(activityRequest.getUserId());
+        if (isUserValid) {
+            Activity activity = Activity.builder()
+                    .userId(activityRequest.getUserId())
+                    .type(activityRequest.getActivityType())
+                    .duration(activityRequest.getDuration())
+                    .build();
 
-        Integer caloriesBurned= (int) (getMetValue(activity.getType())*70*activity.getDuration()/60);
-        activity.setCaloriesBurned(caloriesBurned);
+            Integer caloriesBurned= (int) (getMetValue(activity.getType())*70*activity.getDuration()/60);
+            activity.setCaloriesBurned(caloriesBurned);
 
-        Activity savedActivity = activityRepository.save(activity);
-        return mapToResponse(savedActivity);
+            Activity savedActivity = activityRepository.save(activity);
+            return mapToResponse(savedActivity);
+        }else{
+            throw new RuntimeException("User not valid");
+        }
     }
 
     private ActivityResponse mapToResponse(Activity activity) {
