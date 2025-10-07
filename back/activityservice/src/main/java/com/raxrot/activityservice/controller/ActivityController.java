@@ -1,4 +1,4 @@
-package com.raxrot.activityservice;
+package com.raxrot.activityservice.controller;
 
 import com.raxrot.activityservice.dto.ActivityRequest;
 import com.raxrot.activityservice.dto.ActivityResponse;
