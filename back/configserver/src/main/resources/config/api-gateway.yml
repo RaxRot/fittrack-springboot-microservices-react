@@ -1,4 +1,9 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8181/realms/fitness-oath2/protocol/openid-connect/certs
   cloud:
     gateway:
       routes:
@@ -18,3 +23,4 @@ eureka:
 
 server:
   port: 8080
+
