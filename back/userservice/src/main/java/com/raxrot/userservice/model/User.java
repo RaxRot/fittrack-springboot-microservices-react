@@ -32,4 +32,6 @@ public class User {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    private String keycloakId;
 }
